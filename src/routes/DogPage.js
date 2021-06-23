@@ -32,7 +32,7 @@ const initialvalues2 = [
 ];
 
 export default function DogPage() {
-  const [dogs, setDogs] = useState();
+  const [dogs, setDogs] = useState(initialvalues2);
   const [formData, setFormData] = useState(initialValues);
   const [edit, setEdit] = useState(0);
   const [refresh, setrefresh] = useState(0);
@@ -46,12 +46,16 @@ export default function DogPage() {
       .catch((err) => console.log(err));
   });
 
-  // Submit and update new dog
+  // Edit new dog
   function handleSubmit(event) {
     event.preventDefault();
     const body = { ...formData };
     console.log("Formdata: " + formData);
-    fetchData("", https.PUT, body);
+    fetchData(
+      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog/edit",
+      https.PUT,
+      body
+    );
     setFormData(initialValues);
     setrefresh(refresh + 1);
     setEdit(null);
@@ -94,8 +98,13 @@ export default function DogPage() {
   }
 
   // Delete a dog
-  function handleDelete(id) {
-    fetchData("").then(setrefresh(refresh + 1));
+  function handleDelete(event) {
+    fetchData(
+      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog" +
+        "/" +
+        edit,
+      https.DELETE
+    ).then(setrefresh(refresh + 1));
   }
 
   return (
@@ -121,7 +130,7 @@ export default function DogPage() {
                 {dogs && (
                   <>
                     {dogs.map((item) => (
-                      <tr key={item.id} onClick={() => setEdit(item.id)}>
+                      <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.breed}</td>
@@ -129,12 +138,10 @@ export default function DogPage() {
                         <td>{item.gender}</td>
                         <td>{item.birthdate}</td>
                         <td>
-                          <button>Edit</button>
+                          <button onClick={() => setEdit(item.id)}>Edit</button>
                         </td>
                         <td>
-                          <button onClick={() => handleDelete(item.id)}>
-                            Delete
-                          </button>
+                          <button onClick={handleDelete}>Delete</button>
                         </td>
                       </tr>
                     ))}
@@ -192,6 +199,9 @@ export default function DogPage() {
             </Button>
             <Button block onClick={handleSubmit2}>
               Add dog
+            </Button>
+            <Button block onClick={handleDelete}>
+              Delete dog
             </Button>
           </Form>
         </div>
