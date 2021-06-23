@@ -6,7 +6,7 @@ function AuthenticatedHeader(props) {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <LinkContainer to="/">
-        <Navbar.Brand>inSession Startcode</Navbar.Brand>
+        <Navbar.Brand>Re-exam Dog-walkers</Navbar.Brand>
       </LinkContainer>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -20,13 +20,6 @@ function AuthenticatedHeader(props) {
           </LinkContainer>
           <LinkContainer exact to="/dogs">
             <Nav.Link>DogPage</Nav.Link>
-          </LinkContainer>
-
-          <LinkContainer to="/user">
-            <Nav.Link>User data</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/admin">
-            <Nav.Link>Admin data</Nav.Link>
           </LinkContainer>
         </Nav>
         <Nav>

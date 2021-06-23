@@ -18,6 +18,7 @@ const initialValues = {
   image: "",
   gender: "",
   birthdate: "",
+  owner: "",
 };
 
 const initialvalues2 = [
@@ -27,20 +28,33 @@ const initialvalues2 = [
     breed: "",
     image: "",
     gender: "",
-    birthdate: "",
+    owner: "",
+  },
+];
+
+const initialvalues3 = [
+  {
+    id: "1",
+    name: "",
+    address: "",
+    address2: "",
+    phone: "",
   },
 ];
 
 export default function DogPage() {
   const [dogs, setDogs] = useState(initialvalues2);
   const [formData, setFormData] = useState(initialValues);
+  const [owner, setOwners] = useState(initialvalues3);
+
   const [edit, setEdit] = useState(0);
+  const [edit2, setEdit2] = useState(0);
   const [refresh, setrefresh] = useState(0);
 
   // Get dog data for map
   React.useEffect(() => {
     fetchData(
-      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog/all"
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/dog/all"
     )
       .then((data) => setDogs(data))
       .catch((err) => console.log(err));
@@ -52,7 +66,7 @@ export default function DogPage() {
     const body = { ...formData };
     console.log("Formdata: " + formData);
     fetchData(
-      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog/edit",
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/dog/edit",
       https.PUT,
       body
     );
@@ -64,7 +78,7 @@ export default function DogPage() {
   // Get dog by ID
   useEffect(() => {
     fetchData(
-      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog" +
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/dog" +
         "/" +
         edit,
       https.GET
@@ -88,7 +102,7 @@ export default function DogPage() {
     const body = { ...formData };
     console.log("Formdata 2: " + formData);
     fetchData(
-      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog",
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/dog",
       https.POST,
       body
     );
@@ -100,63 +114,129 @@ export default function DogPage() {
   // Delete a dog
   function handleDelete(event) {
     fetchData(
-      "https://www.peterrambeckandersen.com/tomcat/dog-walker/api/dog" +
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/dog" +
         "/" +
         edit,
       https.DELETE
     ).then(setrefresh(refresh + 1));
   }
 
+  // Get owner data for map
+  React.useEffect(() => {
+    fetchData(
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/owner/all"
+    )
+      .then((data) => setOwners(data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    const body = { ...formData };
+    fetchData(
+      "https://www.indochinaexplorers.com/tomcat/dog-walker/api/dog/add" +
+        "/" +
+        edit2,
+      https.PUT,
+      body
+    )
+      .then((data) => setFormData(data))
+      .catch((err) => console.log(err));
+  }, [edit2]);
+
   return (
     <div className="container">
       <h1>Dog page</h1>
       <hr />
-      <div className="row">
-        <div className="col-md-6">
-          <h2>Dogs</h2>
-          <div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Breed</th>
-                  <th>Image</th>
-                  <th>Gender</th>
-                  <th>Birthdate</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dogs && (
-                  <>
-                    {dogs.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.name}</td>
-                        <td>{item.breed}</td>
-                        <td>{item.image}</td>
-                        <td>{item.gender}</td>
-                        <td>{item.birthdate}</td>
-                        <td>
-                          <button onClick={() => setEdit(item.id)}>Edit</button>
-                        </td>
-                        <td>
-                          <button onClick={handleDelete}>Delete</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </>
-                )}
-              </tbody>
-            </table>
-          </div>
+      <div className="col-md-12">
+        <h2>Dogs</h2>
+        <div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Breed</th>
+                <th>Image</th>
+                <th>Gender</th>
+                <th>Birthdate</th>
+                <th>Owner</th>
+
+                <th>Edit Dog</th>
+                <th>Delete Dog</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dogs && (
+                <>
+                  {dogs.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>{item.name}</td>
+                      <td>{item.breed}</td>
+                      <td>{item.image}</td>
+                      <td>{item.gender}</td>
+                      <td>{item.birthdate}</td>
+                      <td>0</td>
+
+                      <td>
+                        <button onClick={() => setEdit(item.id)}>Edit</button>
+                      </td>
+                      <td>
+                        <button onClick={handleDelete}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
         </div>
-        <div className="col-md-6">
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          <h2>Owners</h2>
+
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Address2</th>
+                <th>Phone</th>
+
+                <th>Add Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              {owner && (
+                <>
+                  {owner.map((item) => (
+                    <tr key={item.id} onClick={() => setEdit2(item.id)}>
+                      <td>{item.id}</td>
+                      <td>{item.name}</td>
+                      <td>{item.address}</td>
+                      <td>{item.address2}</td>
+                      <td>{item.phone}</td>
+
+                      <td>
+                        <button>Add</button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formData">
               <Form.Label>
                 {" "}
-                <h2>Dog</h2>
+                <h2>Dogform</h2>
               </Form.Label>
               <Form.Control
                 type="text"
