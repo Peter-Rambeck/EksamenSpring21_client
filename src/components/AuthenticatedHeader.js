@@ -18,6 +18,9 @@ function AuthenticatedHeader(props) {
           <LinkContainer exact to="/walker">
             <Nav.Link>WalkerPage</Nav.Link>
           </LinkContainer>
+          <LinkContainer exact to="/dogs">
+            <Nav.Link>DogPage</Nav.Link>
+          </LinkContainer>
 
           <LinkContainer to="/user">
             <Nav.Link>User data</Nav.Link>

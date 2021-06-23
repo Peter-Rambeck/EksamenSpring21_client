@@ -2,6 +2,7 @@ import * as React from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import AuthenticatedHeader from "./components/AuthenticatedHeader";
 import AdminPage from "./routes/AdminPage";
+import DogPage from "./routes/DogPage";
 import HomePage from "./routes/HomePage";
 
 import UserPage from "./routes/UserPage";
@@ -19,6 +20,10 @@ function AuthenticatedApp(props) {
 
         <Route path="/walker">
           <WalkerPage />
+        </Route>
+
+        <Route path="/dogs">
+          <DogPage />
         </Route>
 
         <Route path="/user">
